@@ -54,6 +54,12 @@ public class PageTable{
 			// check for match
 			if(table.get(i).getPid() == p.getPid() && table.get(i).getNumber() == p.getPage()){
 				// already in table
+				
+				// mark as dirty if writes
+				if(p.canWrite()){
+					table.get(i).setDirty(true);	
+				}
+				
 				// print
 				System.out.println("no page fault. accessed frame #"+i);
 				// return

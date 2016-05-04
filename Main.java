@@ -9,9 +9,9 @@ import java.io.*;
 public class Main{
 	private int pageFaults;
 	private int diskAccesses;
-	private static int VIRT_ADDR_SPACE = 65536;
+	private static int VIRT_ADDR_SPACE = 2^16;
 	private static int VIRT_ADDR_SPACE_EXP = 16;
-	private static int P_MEM = 2048;
+	private static int P_MEM = 2^11;
 	private static int P_MEM_EXP = 11;
 	private int PAGE_SIZE = 0;
 	private int PAGE_SIZE_EXP = 0;
@@ -106,19 +106,18 @@ public class Main{
 		//preprocessing for OPT
 		
 		//figure out page number and when process is executed
-		int counter = 0;
 		for(Process entry: tempQueue){
 			
+			int i = 0;
 			int pageNumber = (int) entry.getAddress()/ PAGE_SIZE;
 			
 			entry.setPage(pageNumber);
-			entry.setBirthday(counter);
-			counter++;
+			entry.setBirthday(i);
+			i++;
 		}
 		
 		for(int i = 0; i<tempQueue.size(); i++){
 			Process currentInstruction = tempQueue.get(i);
-			System.out.println(currentInstruction.getBirthday());
 			//determine previous
 			currentInstruction.setLastUsed(currentInstruction.getBirthday());
 			for(int j = 0; j<i; j++){
@@ -138,8 +137,7 @@ public class Main{
 			}
 		}
 		
-		System.out.println(P_MEM);
-		System.out.println(PAGE_SIZE);
+		
 		PageTable frameTable = new PageTable(P_MEM/PAGE_SIZE, PAGE_SIZE, alg);
 		
 		while(!tempQueue.isEmpty()){
@@ -150,57 +148,6 @@ public class Main{
 			frameTable.add(nextInstruction);
 		}	
 	}
-
-	/** FIRST COME FIRST SERVE */
-	// LEFT FOR EXAMPLE
-	/*public void fcfs(LinkedList<Process> inQueue){
-		System.out.println("RUNNING FCFS");
-		
-		PriorityQueue<Process> sched = new PriorityQueue<Process>(5, new CompareFCFS());
-		//get all the processes into the queue
-		for(Process entry: inQueue){
-			sched.add(entry);
-		}
-		//simulate
-		int time = 0;
-		
-		while(!sched.isEmpty()) {
-			//pop
-			Process currentProcess = sched.poll();
-			//print
-			currentProcess.setIsCurrentProcess(true);
-			boolean processHasArrived = currentProcess.getArrival() <= time;
-			if(processHasArrived){
-				System.out.println("Time: "+time+ ", process "+ currentProcess.getpid()+" running");
-				
-				//note when the process is first served to the CPU
-				if(currentProcess.getResponse() == -1){
-					currentProcess.setResponse(time - currentProcess.getArrival());
-				}
-			}
-			
-			else System.out.println("Time: "+time+ ", No process running");
-			//increment all other processes waiting times
-			for(Process entry: sched){
-				//make sure a process only thinks that it is waiting if it has already arrived
-				if(entry.getArrival()<=time){
-					entry.incrementWaiting();
-				}
-			}
-
-			
-			//decrement remaining time and put back in queue so long as the process is not yet done running
-			//puts a not arrived process back into the queue as well
-			if(currentProcess.getRemaining()>1 || !processHasArrived){
-				currentProcess.setRemaining(currentProcess.getRemaining()-1);
-				sched.add(currentProcess);
-			}
-			time++;
-		}
-		//analyze
-		analyze();
-	}*/
-
 	
 	/** analysis function called at the end */
 	public void analyze(){
