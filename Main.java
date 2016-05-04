@@ -106,9 +106,9 @@ public class Main{
 		//preprocessing for OPT
 		
 		//figure out page number and when process is executed
+		int i = 0;
 		for(Process entry: tempQueue){
 			
-			int i = 0;
 			int pageNumber = (int) entry.getAddress()/ PAGE_SIZE;
 			
 			entry.setPage(pageNumber);
@@ -118,6 +118,7 @@ public class Main{
 		
 		for(int i = 0; i<tempQueue.size(); i++){
 			Process currentInstruction = tempQueue.get(i);
+			System.out.println(currentInstruction.getBirthday());
 			//determine previous
 			currentInstruction.setLastUsed(currentInstruction.getBirthday());
 			for(int j = 0; j<i; j++){
