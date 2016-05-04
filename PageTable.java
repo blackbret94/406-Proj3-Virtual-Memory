@@ -35,18 +35,17 @@ public class PageTable{
 	
 	public boolean hasFrame(int pageNumber){
 		for(Page page: table){
-			if(page.getPageNumber() == pageNumber) return true;
+			if(page.getNumber() == pageNumber) return true;
 		}
 		return false;
 	}
 	
-	public Process getEntry(int pageNumber){
+	public Page getEntry(int pageNumber){
 		for(Page page: table){
-			if(page.getPageNumber() == pageNumber) return page;
+			if(page.getNumber() == pageNumber) return page;
 		}
 		
 		throw new RuntimeException("Attempted to get Page not in Table");
-		return null;
 	}
 	//true if it does not replace, false if it does replace
 	// keeps all the prints in the Main class
@@ -55,23 +54,30 @@ public class PageTable{
 			// pop
 			int insertSpot = kickNext.poll();
 			
+			// create page
+			Page newPage = createPage(p,insertSpot);
+			
 			// add
-			table.set(insertSpot,p);
+			table.set(insertSpot,newPage);
 			kickNext.add(insertSpot);
 			
 			// print
-			System.out.println("loaded page #"+p.getPage().getNumber()+" of process #" + p.getPid() + " to frame #"+insertSpot+" with replacement.");
+			System.out.println("loaded page #"+newPage.getNumber()+" of process #" + p.getPid() + " to frame #"+insertSpot+" with replacement.");
 			
 			// return
 			return false;
 		} else {
 			// add
 			int insertSpot = kickNext.size();
-			table.set(insertSpot,p);
+			
+			// create page
+			Page newPage = createPage(p,insertSpot);
+			
+			table.set(insertSpot,newPage);
 			kickNext.add(insertSpot);
 			
 			// print
-			System.out.println("loaded page #"+p.getPage().getNumber()+" of process #" + p.getPid() + " to frame #"+insertSpot+" with no replacement.");
+			System.out.println("loaded page #"+newPage.getNumber()+" of process #" + p.getPid() + " to frame #"+insertSpot+" with no replacement.");
 			
 			// return
 			return true;
@@ -84,6 +90,8 @@ public class PageTable{
 		
 		// fill out
 		
+		// return
+		return newPage;	
 	}
 	
 	public void updateTick(int time){

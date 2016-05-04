@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class Page{
-  private boolean dirty, usedAgain;
+  private boolean dirty;
   private int birthday, lastUsed, nextUse, number, size;
   
   public Page(){
@@ -13,16 +13,8 @@ public class Page{
 		this.number = number;
 	}
 	
-	public void addProcess(Process p){
-		
-	}
-  
 	public int getSize(){
 		return size;
-	}
-	
-	public int getProcessCount(){
-		return processCount;
 	}
 	
 	public int getNumber(){
