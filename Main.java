@@ -134,6 +134,10 @@ public class Main{
 		}
 		
 	}
+
+	opt(LinkedList<Process> inQueue){
+		System.out.println("RUNNING OPT");
+	}
 	
 	public void fifo(LinkedList inQueue){
 		//incoming address is virtual
