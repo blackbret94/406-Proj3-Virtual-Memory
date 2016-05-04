@@ -4,7 +4,7 @@ public class PageTable{
 	// Iterating over a hash map is a pita, gonna do it this way for less nightmare
 	ArrayList<Page> table;
 	int entries, pageSize, time;
-	PriorityQueue<Page> kickNext;
+	PriorityQueue<Integer> kickNext;
 	
 	public PageTable(int entries, int pageSize, String alg){
 		this.entries = entries;
@@ -48,7 +48,6 @@ public class PageTable{
 		throw new RuntimeException("Attempted to get Page not in Table");
 		return null;
 	}
-	
 	//true if it does not replace, false if it does replace
 	// keeps all the prints in the Main class
 	public boolean add(Process p){
@@ -67,7 +66,7 @@ public class PageTable{
 			return false;
 		} else {
 			// add
-			insertSpot = kickNext.size();
+			int insertSpot = kickNext.size();
 			table.set(insertSpot,p);
 			kickNext.add(insertSpot);
 			
@@ -79,8 +78,12 @@ public class PageTable{
 		}
 	}
 	
-	public boolean remove(){
-		// LIKELY NOT NEEDED
+	public Page createPage(Process p, int number){
+		// instanciate
+		Page newPage = new Page(pageSize,number);
+		
+		// fill out
+		
 	}
 	
 	public void updateTick(int time){
