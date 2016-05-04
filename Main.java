@@ -9,9 +9,9 @@ import java.io.*;
 public class Main{
 	private int pageFaults;
 	private int diskAccesses;
-	private static int VIRT_ADDR_SPACE = 2^16;
+	private static int VIRT_ADDR_SPACE = 65536;
 	private static int VIRT_ADDR_SPACE_EXP = 16;
-	private static int P_MEM = 2^11;
+	private static int P_MEM = 2048;
 	private static int P_MEM_EXP = 11;
 	private int PAGE_SIZE = 0;
 	private int PAGE_SIZE_EXP = 0;
@@ -137,7 +137,8 @@ public class Main{
 			}
 		}
 		
-		
+		System.out.println(P_MEM);
+		System.out.println(PAGE_SIZE);
 		PageTable frameTable = new PageTable(P_MEM/PAGE_SIZE, PAGE_SIZE, alg);
 		
 		while(!tempQueue.isEmpty()){
