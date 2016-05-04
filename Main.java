@@ -101,14 +101,22 @@ public class Main{
 		
 		in.close();
 		
+		
 		//Conversion between incoming process/instruction to Page goes here
 		//preprocessing for OPT
+		
+		for(Process entry: tempQueue){
+			int i = 0;
+			
+			
+			i++	
+		}
 		
 		PageTable frameTable = new PageTable(P_MEM/PAGE_SIZE, PAGE_SIZE, alg);
 		
 		while(!tempQueue.isEmpty()){
 			//pop
-			Page nextInstruction = tempQueue.poll();
+			Process nextInstruction = tempQueue.poll();
 			
 			//make nice readable vars
 			int virtPageNumber = nextInstruction.getPageNumber();

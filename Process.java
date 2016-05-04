@@ -1,7 +1,6 @@
 public class Process {
   
-  private int pid;
-  private int address;
+  private int pid, address, page;
   private boolean writable;
   
   public Process(){
@@ -13,6 +12,7 @@ public class Process {
     this.pid = pid;
     this.address = address;
     this.writable = writable;
+	page = -1;
   }
   
   public int getPid(){
@@ -25,5 +25,13 @@ public class Process {
   
   public boolean canWrite(){
     return writable;
+  }
+  
+  public boolean setPage(int page){
+	  this.page = page;
+  }
+  
+  public void getPage(){
+	  return page;
   }
 }

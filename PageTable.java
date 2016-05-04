@@ -4,12 +4,12 @@ public class PageTable{
 	// Iterating over a hash map is a pita, gonna do it this way for less nightmare
 	LinkedList<Page> table;
 	int entries, pageSize, time;
-	PriorityQueue<int> kickNext;
+	PriorityQueue<Page> kickNext;
 	
 	public PageTable(int entries, int pageSize, String alg){
 		this.entries = entries;
 		this.pageSize = pageSize;
-		table = new LinkedList<Page> (entries);
+		table = new LinkedList<Page> (1);
 		
 		kickNext = new PriorityQueue<Page>(1);
 		
@@ -30,10 +30,11 @@ public class PageTable{
 	}
 	
 	public boolean isFull(){
-		return true;
+		if (table.size() == entries) return true;
+		return false;
 	}
 	
-	public boolean isInTable(int pageNumber){
+	public boolean hasFrame(int pageNumber){
 		for(Page page: table){
 			if(page.getPageNumber() == pageNumber) return true;
 		}
@@ -49,11 +50,12 @@ public class PageTable{
 		return null;
 	}
 	
-	//true if it does not replace, false if it does replace
-	// keeps all the prints in the Main class
+	//if the table is empty
 	public boolean add(Process){
 		return true;
 	}
+	
+	public boolean remove
 	
 	public void updateTick(int time){
 		this.time = time;
