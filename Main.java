@@ -145,25 +145,8 @@ public class Main{
 			Process nextInstruction = tempQueue.poll();
 			
 			//make nice readable vars
-			int virtPageNumber = nextInstruction.getPage();
-			int pid = nextInstruction.getpid();
-			
-			//is it in the table?
-			if(frameTable.hasFrame(virtPageNumber, pid)){
-				System.out.println("no page fault. accessed frame #"/* need phys addr here*/);
-				if(nextInstruction.isWrite()){
-						//flip dirty bit
-				}
-				System.out.println("no page fault. accessed frame #"/* need phys addr here*/);
-				System.out.println("\tVirtual Address: "+/*virt address*/ " -> Physical Address"/*phys address*/);
-			}	else {
-				// incement page faults
-				pageFaults++;
-				
-				// add
-				frameTable.add(nextInstruction);
-			}	
-		}
+			frameTable.add(nextInstruction);
+		}	
 	}
 
 	/** FIRST COME FIRST SERVE */

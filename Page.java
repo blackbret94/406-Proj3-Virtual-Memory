@@ -12,17 +12,9 @@ public class Page{
 		this.size = size;
 		this.number = number;
 	}
-	
-	public void addProcess(Process p){
-		
-	}
   
 	public int getSize(){
 		return size;
-	}
-	
-	public int getProcessCount(){
-		return processCount;
 	}
 	
 	public int getNumber(){

@@ -1,6 +1,6 @@
 public class Process {
   
-  private int pid, address, page, birthday, nextUse, lastUse;
+  private int pid, address, page, birthday, nextUse, lastUsed;
   private boolean writable, usedAgain;
   
   public Process(){
@@ -27,7 +27,7 @@ public class Process {
     return writable;
   }
   
-  public boolean setPage(int page){
+  public void setPage(int page){
 	  this.page = page;
   }
   
