@@ -12,11 +12,7 @@ public class Page{
 		this.size = size;
 		this.number = number;
 	}
-<<<<<<< HEAD
-  
-=======
-	
->>>>>>> 823aa683b246b61321b97b865501cd83975bbc12
+
 	public int getSize(){
 		return size;
 	}
