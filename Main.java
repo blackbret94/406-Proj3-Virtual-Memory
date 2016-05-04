@@ -86,7 +86,7 @@ public class Main{
 				} else if(brokenLine[2].equals("W")){
 					writable = true;
 				} else System.out.println("Read/write could not be interpretted as a boolean, please specify as \"R\" or \"W\"");
-				writable = Boolean.parseBoolean(brokenLine[2]);
+				//writable = Boolean.parseBoolean(brokenLine[2]);
 			}
 			catch(Exception e){
 				System.out.println("Read/write could not be interpretted as a boolean, please specify as \"R\" or \"W\": "+e);
@@ -131,6 +131,7 @@ public class Main{
 				if(nextInstruction.getPid()==currentInstruction.getPid() && nextInstruction.getPage() == currentInstruction.getPage()){
 					currentInstruction.setNextUse(j);
 					currentInstruction.setUsedAgain(true);
+					break;
 				}
 			}
 		}
@@ -140,7 +141,6 @@ public class Main{
 		while(!tempQueue.isEmpty()){
 			//pop
 			Process nextInstruction = tempQueue.poll();
-			
 			//make nice readable vars
 			frameTable.add(nextInstruction);
 		}	
