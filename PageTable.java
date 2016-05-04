@@ -51,37 +51,48 @@ public class PageTable{
 	
 	//true if it does not replace, false if it does replace
 	// keeps all the prints in the Main class
-	public boolean add(Process){
-		return true;
+	public boolean add(Process p){
+		if(kickNext.size() >= entries){
+			// pop
+			kickNext.poll();
+			
+			// add
+			kickNext.add(p);
+			
+			// return
+			return false;
+		} else {
+			// add
+			kickNext.add(p);
+			
+			// return
+			return true;
+		}
 	}
 	
 	public void updateTick(int time){
 		this.time = time;
 	}
 	
-	import java.util.*;
+	class CompareFIFO implements Comparator<Page>{
+		public CompareFIFO(){
 
+		}
+
+		public int compare (Page p1, Page p2){
+			return p1.getBirthday() - p2.getBirthday();
+		}
 
 	}
-	
-class CompareFIFO implements Comparator<Page>{
-  public CompareFIFO(){
-    
-  }
-  
-  public int compare (Page p1, Page p2){
-    return p1.getBirthday() - p2.getBirthday();
-  }
-  
-}
 
-class CompareLRU implements Comparator<Page>{
-  public CompareLRU(){
-    
-  }
-  
-  public int compare (Page p1, Page p2){
-    return p1.getLastUsed() - p2.getLastUsed();
-  }
-  
+	class CompareLRU implements Comparator<Page>{
+		public CompareLRU(){
+
+		}
+
+		public int compare (Page p1, Page p2){
+			return p1.getLastUsed() - p2.getLastUsed();
+		}
+
+	}
 }

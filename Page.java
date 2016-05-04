@@ -1,15 +1,30 @@
+import java.util.*;
+
 public class Page{
   private boolean dirty;
-  private int birthday, lastUsed, nextUse, number;
+  private int birthday, lastUsed, nextUse, number, size;
   
   public Page(){
-    
+    System.out.println("Blank page constructor should NOT be used");
   }
 	
-	public Page(int number){
+	public Page(int size, int number){
+		this.size = size;
 		this.number = number;
 	}
+	
+	public void addProcess(Process p){
+		
+	}
   
+	public int getSize(){
+		return size;
+	}
+	
+	public int getProcessCount(){
+		return processCount;
+	}
+	
 	public int getNumber(){
     return number;
   }
