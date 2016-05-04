@@ -83,7 +83,7 @@ public class PageTable{
 			
 			// print
 			System.out.println("loaded page #"+virtAdd+" of process #" + p.getPid() + " to frame #"+insertSpot+" with replacement.");
-			
+			System.out.println("\tVirtual Address: "+p.getAddress()+" -> Physical Address: "+(insertSpot*pageSize+(p.getAddress()-pageSize*p.getPage())));
 			// return
 			return;
 		} else {
@@ -101,6 +101,7 @@ public class PageTable{
 			
 			// print
 			System.out.println("loaded page #"+virtAdd+" of process #" + p.getPid() + " to frame #"+insertSpot+" with no replacement.");
+			System.out.println("\tVirtual Address: "+p.getAddress()+" -> Physical Address: "+(insertSpot*pageSize+(p.getAddress()-pageSize*p.getPage())));
 			
 			// return
 			return;
