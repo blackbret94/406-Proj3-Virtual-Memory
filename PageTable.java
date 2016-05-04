@@ -49,6 +49,7 @@ public class PageTable{
 		throw new RuntimeException("Attempted to get Page not in Table");
 		return null;
 	}
+	
 	//true if it does not replace, false if it does replace
 	// keeps all the prints in the Main class
 	public boolean add(Process p){

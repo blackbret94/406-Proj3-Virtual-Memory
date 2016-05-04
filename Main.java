@@ -55,7 +55,7 @@ public class Main{
 		}
 		
 		//read from file
-		LinkedList<Process> tempQueue = new LinkedList<Process>();
+		ArrayList<Process> tempQueue = new ArrayList<Process>();
 		
 		Scanner in;
 		try{
@@ -105,12 +105,38 @@ public class Main{
 		//Conversion between incoming process/instruction to Page goes here
 		//preprocessing for OPT
 		
+		//figure out page number and when process is executed
 		for(Process entry: tempQueue){
+			
 			int i = 0;
+			int pageNumber = (int) entry.getAddress()/ PAGE_SIZE;
 			
-			
+			entry.setPage(pageNumber);
+			entry.setBirthday(i)
 			i++	
 		}
+		
+		for(int i = 0; i<tempQueue.size(); i++){
+			Process currentInstruction = tempQueue.get(i);
+			//determine previous
+			currentInstruction.setLastUsed(currentProcess.getBirthday());
+			for(int j = 0; j<i; j++){
+				Process previousInstruction = tempQueue.get(j);
+				if(previousInstruction.getPid()==currentInstruction.getPid() && previousInstruction.getPage() == currentInstruction.getPage()){
+					currentInstruction.setLastUsed(j);
+				}
+			}
+			//determine next
+			currentProcess.setUsedAgain(false);
+			for(int j = i+1; j<tempQueue.size()){
+				Process nextInstruction = tempQueue.get(j);
+				if(previousInstruction.getPid()==currentInstruction.getPid() && previousInstruction.getPage() == currentInstruction.getPage()){
+					currentInstruction.setNextUse(j);
+					currentInstruction.setUsedAgain(true);
+				}
+			}
+		}
+		
 		
 		PageTable frameTable = new PageTable(P_MEM/PAGE_SIZE, PAGE_SIZE, alg);
 		
