@@ -123,6 +123,10 @@ public class Main{
 		}
 		
 	}
+	
+	opt(LinkedList<Process> inQueue){
+		System.out.println("RUNNING OPT");
+	}
 
 	/** FIRST COME FIRST SERVE */
 	// LEFT FOR EXAMPLE
