@@ -9,6 +9,12 @@ import java.io.*;
 public class Main{
 	private int pageFaults;
 	private int diskAccesses;
+	private static int VIRT_ADDR_SPACE = 2^16;
+	private static int VIRT_ADDR_SPACE_EXP = 16;
+	private static int P_MEM = 2^11;
+	private static int P_MEM_EXP = 11;
+	private int PAGE_SIZE = 0;
+	private int PAGE_SIZE_EXP = 0;
 	
 	public static void main (String[] args) {
 		Main main = new Main();
@@ -18,7 +24,6 @@ public class Main{
 	public void init(String[] args) {
 		
 		String alg, inputFileName;
-		int pageSize;
 		// get stuff from arguements
 		try{
 			alg = args[0];
@@ -28,15 +33,19 @@ public class Main{
 			return;
 		}
 		try {
-			pageSize = Integer.parseInt(args[1]);
+			PAGE_SIZE = Integer.parseInt(args[1]);
 			
 			// throw an error if it is not in the accepted range
+			if(PAGE_SIZE < 32 || PAGE_SIZE > 512) throw new RuntimeException("Specified Page Size out of Bounds");
 			
 		}
 		catch (Exception e){
-			System.out.println("Page size not specified, please properly format your argument. " + e);
+			System.out.println("Page size not properly specified, please properly format your argument. " + e);
 			return;
 		}
+		//calc exp from bits
+		PAGE_SIZE_EXP = (int) (Math.log(PAGE_SIZE)/Math.log(2));
+		
 		try{
 			inputFileName = args[2];
 		}
@@ -92,6 +101,8 @@ public class Main{
 		
 		in.close();
 		
+		//make page table
+		
 		//switch to proper algorithm
 		switch(alg) {
 			case "OPT":
@@ -99,7 +110,7 @@ public class Main{
 			break;
 
 			case "FIFO":
-			//sjf(tempQueue);
+				fifo(tempQueue);
 			break;
 
 			case "LRU":
@@ -123,9 +134,19 @@ public class Main{
 		}
 		
 	}
-	
+
 	opt(LinkedList<Process> inQueue){
 		System.out.println("RUNNING OPT");
+	}
+	
+	public void fifo(LinkedList inQueue){
+		//incoming address is virtual
+		//divide by page size to get virtual page number
+		//see if page is in table
+			//if it is easy-peasy
+			//else is table full?
+				//if no use empty place
+				//else replace
 	}
 
 	/** FIRST COME FIRST SERVE */
