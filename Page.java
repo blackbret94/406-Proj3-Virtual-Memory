@@ -13,6 +13,14 @@ public class Page{
 		this.number = number;
 	}
 	
+	public boolean isDirty(){
+		return dirty;
+	}
+	
+	public void setDirty(boolean b){
+		dirty = b;
+	}
+	
 	public int getPid(){
 		return pid;
 	}
