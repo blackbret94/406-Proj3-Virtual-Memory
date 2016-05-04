@@ -1,23 +1,11 @@
 public class Page{
   private boolean dirty;
-  private int birthday, lastUsed, nextUse, number;
+  private int birthday, lastUsed, nextUse;
   
   public Page(){
     
   }
-	
-	public Page(int number){
-		this.number = number;
-	}
   
-	public int getNumber(){
-    return number;
-  }
-  
-  public void setNumber(int number){
-    this.number = number;  
-  }
-	
   public int getBirthday(){
     return birthday;
   }
