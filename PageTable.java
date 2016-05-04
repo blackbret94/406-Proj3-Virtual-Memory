@@ -73,7 +73,7 @@ public class PageTable{
 			// create page
 			Page newPage = createPage(p,insertSpot);
 			
-			table.set(insertSpot,newPage);
+			table.add(newPage);
 			kickNext.add(insertSpot);
 			
 			// print
