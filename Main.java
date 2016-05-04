@@ -130,19 +130,20 @@ public class Main{
 				}
 				System.out.println("no page fault. accessed frame #"/* need phys addr here*/);
 				System.out.println("\tVirtual Address: "+/*virt address*/ " -> Physical Address"/*phys address*/);
-			}
-			else{
-				//is table full?
-				if(frameTable.isFull()){
-					//replace
+			}	else {
+				// incement page faults
+				pageFaults++;
+				
+				// add
+				if(frameTable.add(nextInstruction)){
+					// added without removing
+					
+				} else {
+					// had to remove a process
 					
 				}
-				//add
-
-			}
-			
+			}	
 		}
-		
 	}
 
 	/** FIRST COME FIRST SERVE */
