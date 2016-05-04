@@ -49,7 +49,18 @@ public class PageTable{
 	}
 	//true if it does not replace, false if it does replace
 	// keeps all the prints in the Main class
-	public boolean add(Process p){
+	public void add(Process p){
+		for(int i=0; i<table.size(); i++){
+			// check for match
+			if(table.get(i).getPid() == p.getPid() && table.get(i).getNumber() == p.getPage()){
+				// already in table
+				// print
+				System.out.println("no page fault. accessed frame #"+i);
+				// return
+				return;
+			}
+		}
+		
 		if(kickNext.size() >= entries){
 			// pop
 			int insertSpot = kickNext.poll();
@@ -68,7 +79,7 @@ public class PageTable{
 			System.out.println("loaded page #"+virtAdd+" of process #" + p.getPid() + " to frame #"+insertSpot+" with replacement.");
 			
 			// return
-			return false;
+			return;
 		} else {
 			// add
 			int insertSpot = kickNext.size();
@@ -86,7 +97,7 @@ public class PageTable{
 			System.out.println("loaded page #"+virtAdd+" of process #" + p.getPid() + " to frame #"+insertSpot+" with no replacement.");
 			
 			// return
-			return true;
+			return;
 		}
 	}
 	
@@ -98,6 +109,7 @@ public class PageTable{
 		newPage.setBirthday(p.getBirthday());
 		newPage.setLastUsed(p.getLastUsed());
 		newPage.setNextUse(p.getNextUse());
+		newPage.setPid(p.getPid());
 		
 		// return
 		return newPage;	
@@ -113,7 +125,6 @@ public class PageTable{
 		}
 
 		public int compare (Integer p1, Integer p2){
-			System.out.println(table.get(p1).getBirthday() + " - " + table.get(p2).getBirthday());
 			return table.get(p1).getBirthday() - table.get(p2).getBirthday();
 		}
 
