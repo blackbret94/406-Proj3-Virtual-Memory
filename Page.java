@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class Page{
-  private boolean dirty;
+  private boolean dirty, usedAgain;
   private int birthday, lastUsed, nextUse, number, size;
   
   public Page(){

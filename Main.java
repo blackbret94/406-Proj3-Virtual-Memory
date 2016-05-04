@@ -55,7 +55,7 @@ public class Main{
 		}
 		
 		//read from file
-		ArrayList<Process> tempQueue = new ArrayList<Process>();
+		LinkedList<Process> tempQueue = new LinkedList<Process>();
 		
 		Scanner in;
 		try{
@@ -112,14 +112,14 @@ public class Main{
 			int pageNumber = (int) entry.getAddress()/ PAGE_SIZE;
 			
 			entry.setPage(pageNumber);
-			entry.setBirthday(i)
-			i++	
+			entry.setBirthday(i);
+			i++;
 		}
 		
 		for(int i = 0; i<tempQueue.size(); i++){
 			Process currentInstruction = tempQueue.get(i);
 			//determine previous
-			currentInstruction.setLastUsed(currentProcess.getBirthday());
+			currentInstruction.setLastUsed(currentInstruction.getBirthday());
 			for(int j = 0; j<i; j++){
 				Process previousInstruction = tempQueue.get(j);
 				if(previousInstruction.getPid()==currentInstruction.getPid() && previousInstruction.getPage() == currentInstruction.getPage()){
@@ -127,10 +127,10 @@ public class Main{
 				}
 			}
 			//determine next
-			currentProcess.setUsedAgain(false);
-			for(int j = i+1; j<tempQueue.size()){
+			currentInstruction.setUsedAgain(false);
+			for(int j = i+1; j<tempQueue.size(); j++){
 				Process nextInstruction = tempQueue.get(j);
-				if(previousInstruction.getPid()==currentInstruction.getPid() && previousInstruction.getPage() == currentInstruction.getPage()){
+				if(nextInstruction.getPid()==currentInstruction.getPid() && nextInstruction.getPage() == currentInstruction.getPage()){
 					currentInstruction.setNextUse(j);
 					currentInstruction.setUsedAgain(true);
 				}
@@ -145,7 +145,7 @@ public class Main{
 			Process nextInstruction = tempQueue.poll();
 			
 			//make nice readable vars
-			int virtPageNumber = nextInstruction.getPageNumber();
+			int virtPageNumber = nextInstruction.getPage();
 			int pid = nextInstruction.getpid();
 			
 			//is it in the table?
@@ -161,13 +161,7 @@ public class Main{
 				pageFaults++;
 				
 				// add
-				if(frameTable.add(nextInstruction)){
-					// added without removing
-					
-				} else {
-					// had to remove a process
-					
-				}
+				frameTable.add(nextInstruction);
 			}	
 		}
 	}
