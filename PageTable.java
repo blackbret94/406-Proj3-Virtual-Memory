@@ -61,8 +61,11 @@ public class PageTable{
 			table.set(insertSpot,newPage);
 			kickNext.add(insertSpot);
 			
+			//virt addr/page size
+			int virtAdd = p.getAddress()/pageSize;
+			
 			// print
-			System.out.println("loaded page #"+newPage.getNumber()+" of process #" + p.getPid() + " to frame #"+insertSpot+" with replacement.");
+			System.out.println("loaded page #"+virtAdd+" of process #" + p.getPid() + " to frame #"+insertSpot+" with replacement.");
 			
 			// return
 			return false;
@@ -76,8 +79,11 @@ public class PageTable{
 			table.add(newPage);
 			kickNext.add(insertSpot);
 			
+			//virt addr/page size
+			int virtAdd = p.getAddress()/pageSize;
+			
 			// print
-			System.out.println("loaded page #"+newPage.getNumber()+" of process #" + p.getPid() + " to frame #"+insertSpot+" with no replacement.");
+			System.out.println("loaded page #"+virtAdd+" of process #" + p.getPid() + " to frame #"+insertSpot+" with no replacement.");
 			
 			// return
 			return true;
@@ -89,6 +95,9 @@ public class PageTable{
 		Page newPage = new Page(pageSize,number);
 		
 		// fill out
+		newPage.setBirthday(p.getBirthday());
+		newPage.setLastUsed(p.getLastUsed());
+		newPage.setNextUse(p.getNextUse());
 		
 		// return
 		return newPage;	
@@ -104,6 +113,7 @@ public class PageTable{
 		}
 
 		public int compare (Integer p1, Integer p2){
+			System.out.println(table.get(p1).getBirthday() + " - " + table.get(p2).getBirthday());
 			return table.get(p1).getBirthday() - table.get(p2).getBirthday();
 		}
 
