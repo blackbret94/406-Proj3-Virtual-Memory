@@ -118,7 +118,7 @@ public class Main{
 		
 		for(int i = 0; i<tempQueue.size(); i++){
 			Process currentInstruction = tempQueue.get(i);
-			System.out.println(currentInstruction.getBirthday());
+			//System.out.println(currentInstruction.getBirthday());
 			//determine previous
 			currentInstruction.setLastUsed(currentInstruction.getBirthday());
 			for(int j = 0; j<i; j++){
@@ -138,8 +138,8 @@ public class Main{
 			}
 		}
 		
-		System.out.println(P_MEM);
-		System.out.println(PAGE_SIZE);
+		//System.out.println(P_MEM);
+		//System.out.println(PAGE_SIZE);
 		PageTable frameTable = new PageTable(P_MEM/PAGE_SIZE, PAGE_SIZE, alg);
 		
 		while(!tempQueue.isEmpty()){

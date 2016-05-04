@@ -66,7 +66,7 @@ public class PageTable{
 			
 			// print
 			System.out.println("loaded page #"+virtAdd+" of process #" + p.getPid() + " to frame #"+insertSpot+" with replacement.");
-			
+			System.out.println("\tVirtual Address: "+p.getAddress()+" -> Physical Address: "+(insertSpot*pageSize+(p.getAddress()-pageSize*p.getPage())));
 			// return
 			return false;
 		} else {
@@ -84,6 +84,7 @@ public class PageTable{
 			
 			// print
 			System.out.println("loaded page #"+virtAdd+" of process #" + p.getPid() + " to frame #"+insertSpot+" with no replacement.");
+			System.out.println("\tVirtual Address: "+p.getAddress()+" -> Physical Address: "+(insertSpot*pageSize+(p.getAddress()-pageSize*p.getPage())));
 			
 			// return
 			return true;
@@ -113,7 +114,7 @@ public class PageTable{
 		}
 
 		public int compare (Integer p1, Integer p2){
-			System.out.println(table.get(p1).getBirthday() + " - " + table.get(p2).getBirthday());
+			//System.out.println(table.get(p1).getBirthday() + " - " + table.get(p2).getBirthday());
 			return table.get(p1).getBirthday() - table.get(p2).getBirthday();
 		}
 
