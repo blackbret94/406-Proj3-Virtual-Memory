@@ -106,14 +106,14 @@ public class Main{
 		//preprocessing for OPT
 		
 		//figure out page number and when process is executed
-		int i = 0;
+		int counter = 0;
 		for(Process entry: tempQueue){
 			
 			int pageNumber = (int) entry.getAddress()/ PAGE_SIZE;
 			
 			entry.setPage(pageNumber);
-			entry.setBirthday(i);
-			i++;
+			entry.setBirthday(counter);
+			counter++;
 		}
 		
 		for(int i = 0; i<tempQueue.size(); i++){
