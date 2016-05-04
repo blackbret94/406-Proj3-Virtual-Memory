@@ -5,12 +5,17 @@ public class PageTable{
 	ArrayList<Page> table;
 	int entries, pageSize, time;
 	PriorityQueue<Integer> kickNext;
+	private int pageFaults;
+	private int diskAccesses;
 	
 	public PageTable(int entries, int pageSize, String alg){
 		this.entries = entries;
 		this.pageSize = pageSize;
 		table = new ArrayList<Page> (1); // represents frames
 		kickNext = new PriorityQueue<Integer>(1); // queue of what frames should be replaced next
+		
+		pageFaults = 0;
+		diskAccesses = 0;
 		
 		switch(alg){
 			
@@ -52,10 +57,11 @@ public class PageTable{
 	public void add(Process p){
 		for(int i=0; i<table.size(); i++){
 			// check for match
-			if(table.get(i).getPid() == p.getPid() && table.get(i).getNumber() == p.getPage()){
+			if(table.get(i).getPid() == p.getPid() && table.get(i).getVirtNumber() == p.getPage()){
 				// already in table
 				// print
 				System.out.println("no page fault. accessed frame #"+i);
+				System.out.println("\tVirtual Address: "+p.getAddress()+"  ->  Physical Address: "+(i*pageSize+(p.getAddress()-pageSize*p.getPage())));
 				// return
 				return;
 			}
@@ -76,8 +82,8 @@ public class PageTable{
 			int virtAdd = p.getAddress()/pageSize;
 			
 			// print
-			System.out.println("loaded page #"+virtAdd+" of process #" + p.getPid() + " to frame #"+insertSpot+" with replacement.");
-			System.out.println("\tVirtual Address: "+p.getAddress()+" -> Physical Address: "+(insertSpot*pageSize+(p.getAddress()-pageSize*p.getPage())));
+			System.out.println("loaded page #"+virtAdd+" of processes #" + p.getPid() + " to frame #"+insertSpot+" with replacement");
+			System.out.println("\tVirtual Address: "+p.getAddress()+"  ->  Physical Address: "+(insertSpot*pageSize+(p.getAddress()-pageSize*p.getPage())));
 			// return
 			return;
 		} else {
@@ -94,8 +100,8 @@ public class PageTable{
 			int virtAdd = p.getAddress()/pageSize;
 			
 			// print
-			System.out.println("loaded page #"+virtAdd+" of process #" + p.getPid() + " to frame #"+insertSpot+" with no replacement.");
-			System.out.println("\tVirtual Address: "+p.getAddress()+" -> Physical Address: "+(insertSpot*pageSize+(p.getAddress()-pageSize*p.getPage())));
+			System.out.println("loaded page #"+virtAdd+" of processes #" + p.getPid() + " to frame #"+insertSpot+" with no replacement.");
+			System.out.println("\tVirtual Address: "+p.getAddress()+"  ->  Physical Address: "+(insertSpot*pageSize+(p.getAddress()-pageSize*p.getPage())));
 			
 			// return
 			return;
@@ -111,13 +117,14 @@ public class PageTable{
 		newPage.setLastUsed(p.getLastUsed());
 		newPage.setNextUse(p.getNextUse());
 		newPage.setPid(p.getPid());
+		newPage.setVirtNumber(p.getPage());
 		
 		// return
 		return newPage;	
 	}
 	
-	public void updateTick(int time){
-		this.time = time;
+	public void printResults(){
+		System.out.println("Number of page faults: "+pageFaults+". Number of memory accesses: "+diskAccesses);
 	}
 	
 	class CompareFIFO implements Comparator<Integer>{

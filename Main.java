@@ -7,8 +7,6 @@ import java.io.*;
 
 // TODO: Throw an error if not in the acceptable range
 public class Main{
-	private int pageFaults;
-	private int diskAccesses;
 	private static int VIRT_ADDR_SPACE = 65536;
 	private static int VIRT_ADDR_SPACE_EXP = 16;
 	private static int P_MEM = 2048;
@@ -149,62 +147,6 @@ public class Main{
 			//make nice readable vars
 			frameTable.add(nextInstruction);
 		}	
-	}
-
-	/** FIRST COME FIRST SERVE */
-	// LEFT FOR EXAMPLE
-	/*public void fcfs(LinkedList<Process> inQueue){
-		System.out.println("RUNNING FCFS");
-		
-		PriorityQueue<Process> sched = new PriorityQueue<Process>(5, new CompareFCFS());
-		//get all the processes into the queue
-		for(Process entry: inQueue){
-			sched.add(entry);
-		}
-		//simulate
-		int time = 0;
-		
-		while(!sched.isEmpty()) {
-			//pop
-			Process currentProcess = sched.poll();
-			//print
-			currentProcess.setIsCurrentProcess(true);
-			boolean processHasArrived = currentProcess.getArrival() <= time;
-			if(processHasArrived){
-				System.out.println("Time: "+time+ ", process "+ currentProcess.getpid()+" running");
-				
-				//note when the process is first served to the CPU
-				if(currentProcess.getResponse() == -1){
-					currentProcess.setResponse(time - currentProcess.getArrival());
-				}
-			}
-			
-			else System.out.println("Time: "+time+ ", No process running");
-			//increment all other processes waiting times
-			for(Process entry: sched){
-				//make sure a process only thinks that it is waiting if it has already arrived
-				if(entry.getArrival()<=time){
-					entry.incrementWaiting();
-				}
-			}
-
-			
-			//decrement remaining time and put back in queue so long as the process is not yet done running
-			//puts a not arrived process back into the queue as well
-			if(currentProcess.getRemaining()>1 || !processHasArrived){
-				currentProcess.setRemaining(currentProcess.getRemaining()-1);
-				sched.add(currentProcess);
-			}
-			time++;
-		}
-		//analyze
-		analyze();
-	}*/
-
-	
-	/** analysis function called at the end */
-	public void analyze(){
-		System.out.println("Page faults: " + pageFaults);
-		System.out.println("Disk accesses: " + diskAccesses);
+		frameTable.printResults();
 	}
 }

@@ -2,7 +2,7 @@ import java.util.*;
 
 public class Page{
   private boolean dirty;
-  private int birthday, lastUsed, nextUse, number, size, pid;
+  private int birthday, lastUsed, nextUse, number, size, pid, virtNumber;
   
   public Page(){
     System.out.println("Blank page constructor should NOT be used");
@@ -55,5 +55,13 @@ public class Page{
   
   public void setNextUse(int nextUse){
     this.nextUse = nextUse;
+  }
+  
+  public int getVirtNumber(){
+    return virtNumber;
+  }
+  
+  public void setVirtNumber(int virtNumber){
+    this.virtNumber = virtNumber;
   }
 }
