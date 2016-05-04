@@ -79,7 +79,8 @@ public class PageTable{
 			
 			// create page
 			Page newPage = createPage(p,insertSpot);
-			
+			if(p.canWrite()) newPage.setDirty(true);
+			Page oldPage = table.get(insertSpot);
 			// add
 			table.set(insertSpot,newPage);
 			kickNext.add(insertSpot);
@@ -89,7 +90,16 @@ public class PageTable{
 			
 			// print
 			System.out.println("loaded page #"+virtAdd+" of processes #" + p.getPid() + " to frame #"+insertSpot+" with replacement");
+			if(oldPage.isDirty()){
+				System.out.println("\tNeeded to write frame #"+insertSpot+" to memory");
+				diskAccesses++;
+			}
 			System.out.println("\tVirtual Address: "+p.getAddress()+"  ->  Physical Address: "+(insertSpot*pageSize+(p.getAddress()-pageSize*p.getPage())));
+			
+			//update info counts
+			pageFaults++;
+			diskAccesses++;
+			
 			// return
 			return;
 		} else {
@@ -98,6 +108,7 @@ public class PageTable{
 			
 			// create page
 			Page newPage = createPage(p,insertSpot);
+			if(p.canWrite()) newPage.setDirty(true);
 			
 			table.add(newPage);
 			kickNext.add(insertSpot);
@@ -108,6 +119,10 @@ public class PageTable{
 			// print
 			System.out.println("loaded page #"+virtAdd+" of processes #" + p.getPid() + " to frame #"+insertSpot+" with no replacement.");
 			System.out.println("\tVirtual Address: "+p.getAddress()+"  ->  Physical Address: "+(insertSpot*pageSize+(p.getAddress()-pageSize*p.getPage())));
+			
+			//update info counts
+			pageFaults++;
+			diskAccesses++;
 			
 			// return
 			return;
