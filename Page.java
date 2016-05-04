@@ -2,7 +2,7 @@ import java.util.*;
 
 public class Page{
   private boolean dirty;
-  private int birthday, lastUsed, nextUse, number, size;
+  private int birthday, lastUsed, nextUse, number, size, pid;
   
   public Page(){
     System.out.println("Blank page constructor should NOT be used");
@@ -11,6 +11,14 @@ public class Page{
 	public Page(int size, int number){
 		this.size = size;
 		this.number = number;
+	}
+	
+	public int getPid(){
+		return pid;
+	}
+	
+	public void setPid(int p){
+		pid = p;
 	}
 
 	public int getSize(){
