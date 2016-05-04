@@ -101,52 +101,40 @@ public class Main{
 		
 		in.close();
 		
-		//make page table
+		//Conversion between incoming process/instruction to Page goes here
+		//preprocessing for OPT
 		
-		//switch to proper algorithm
-		switch(alg) {
-			case "OPT":
-			//fcfs(tempQueue);
-			break;
+		PageTable frameTable = new PageTable(P_MEM/PAGE_SIZE, PAGE_SIZE, alg);
+		
+		while(!tempQueue.isEmpty()){
+			//pop
+			Page nextInstruction = tempQueue.poll();
+			
+			//make nice readable vars
+			int virtPageNumber = nextInstruction.getPageNumber();
+			int pid = nextInstruction.getpid();
+			
+			//is it in the table?
+			if(frameTable.hasFrame(virtPageNumber, pid)){
+				System.out.println("no page fault. accessed frame #"/* need phys addr here*/);
+				if(nextInstruction.isWrite()){
+						//flip dirty bit
+				}
+				System.out.println("no page fault. accessed frame #"/* need phys addr here*/);
+				System.out.println("\tVirtual Address: "+/*virt address*/ " -> Physical Address"/*phys address*/);
+			}
+			else{
+				//is table full?
+				if(frameTable.isFull()){
+					//replace
+					
+				}
+				//add
 
-			case "FIFO":
-				fifo(tempQueue);
-			break;
-
-			case "LRU":
-			//srtf(tempQueue);
-			break;
-
-			case "SECOND":
-			//nonpreprior(tempQueue);
-			break;
-
-			case "E_SECOND":
-			//preprior(tempQueue);
-			break;
-
-			case "HYBRID":
-			//rr(tempQueue);
-			break;
-
-			default:
-			throw new RuntimeException("Specified algorithm not recognized");
+			}
+			
 		}
 		
-	}
-
-	opt(LinkedList<Process> inQueue){
-		System.out.println("RUNNING OPT");
-	}
-	
-	public void fifo(LinkedList inQueue){
-		//incoming address is virtual
-		//divide by page size to get virtual page number
-		//see if page is in table
-			//if it is easy-peasy
-			//else is table full?
-				//if no use empty place
-				//else replace
 	}
 
 	/** FIRST COME FIRST SERVE */
