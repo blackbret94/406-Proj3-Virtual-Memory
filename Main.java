@@ -112,7 +112,7 @@ public class Main{
 			int pageNumber = (int) entry.getAddress()/ PAGE_SIZE;
 			
 			entry.setPage(pageNumber);
-			entry.setBirthday(i);
+			entry.setBirthday(counter);
 			counter++;
 		}
 		
