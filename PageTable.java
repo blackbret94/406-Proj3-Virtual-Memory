@@ -2,25 +2,24 @@ import java.util.*;
 
 public class PageTable{
 	// Iterating over a hash map is a pita, gonna do it this way for less nightmare
-	LinkedList<Page> table;
+	ArrayList<Page> table;
 	int entries, pageSize, time;
 	PriorityQueue<Page> kickNext;
 	
 	public PageTable(int entries, int pageSize, String alg){
 		this.entries = entries;
 		this.pageSize = pageSize;
-		table = new LinkedList<Page> (1);
-		
-		kickNext = new PriorityQueue<Page>(1);
+		table = new ArrayList<Page> (1); // represents frames
+		kickNext = new PriorityQueue<Integer>(1); // queue of what frames should be replaced next
 		
 		switch(alg){
 			
 			case "fifo":
-			kickNext = new PriorityQueue<Page> (entries, new CompareFIFO);
+			kickNext = new PriorityQueue<Integer> (entries, new CompareFIFO());
 			break;
 			
 			case "lru":
-			kickNext = new PriorityQueue<Page> (entries, new CompareFIFO);
+			kickNext = new PriorityQueue<Integer> (entries, new CompareFIFO());
 			break;
 			
 			default:
@@ -54,46 +53,57 @@ public class PageTable{
 	public boolean add(Process p){
 		if(kickNext.size() >= entries){
 			// pop
-			kickNext.poll();
+			int insertSpot = kickNext.poll();
 			
 			// add
-			kickNext.add(p);
+			table.set(insertSpot,p);
+			kickNext.add(insertSpot);
+			
+			// print
+			System.out.println("loaded page #"+p.getPage().getNumber()+" of process #" + p.getPid() + " to frame #"+insertSpot+" with replacement.");
 			
 			// return
 			return false;
 		} else {
 			// add
-			kickNext.add(p);
+			insertSpot = kickNext.size();
+			table.set(insertSpot,p);
+			kickNext.add(insertSpot);
+			
+			// print
+			System.out.println("loaded page #"+p.getPage().getNumber()+" of process #" + p.getPid() + " to frame #"+insertSpot+" with no replacement.");
 			
 			// return
 			return true;
 		}
 	}
 	
-	public boolean remove
+	public boolean remove(){
+		// LIKELY NOT NEEDED
+	}
 	
 	public void updateTick(int time){
 		this.time = time;
 	}
 	
-	class CompareFIFO implements Comparator<Page>{
+	class CompareFIFO implements Comparator<Integer>{
 		public CompareFIFO(){
 
 		}
 
-		public int compare (Page p1, Page p2){
-			return p1.getBirthday() - p2.getBirthday();
+		public int compare (Integer p1, Integer p2){
+			return table.get(p1).getBirthday() - table.get(p2).getBirthday();
 		}
 
 	}
 
-	class CompareLRU implements Comparator<Page>{
+	class CompareLRU implements Comparator<Integer>{
 		public CompareLRU(){
 
 		}
 
-		public int compare (Page p1, Page p2){
-			return p1.getLastUsed() - p2.getLastUsed();
+		public int compare (Integer p1, Integer p2){
+			return table.get(p1).getLastUsed() - table.get(p2).getLastUsed();
 		}
 
 	}
