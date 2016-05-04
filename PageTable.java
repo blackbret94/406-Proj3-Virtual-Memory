@@ -24,7 +24,7 @@ public class PageTable{
 			break;
 			
 			case "lru":
-			kickNext = new PriorityQueue<Integer> (entries, new CompareFIFO());
+			kickNext = new PriorityQueue<Integer> (entries, new CompareLRU());
 			break;
 			
 			default:
@@ -150,6 +150,7 @@ public class PageTable{
 		}
 
 		public int compare (Integer p1, Integer p2){
+			//System.out.println(table.get(p1).getLastUsed() +"-"+ table.get(p2).getLastUsed());
 			return table.get(p1).getLastUsed() - table.get(p2).getLastUsed();
 		}
 
