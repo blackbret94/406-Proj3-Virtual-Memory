@@ -239,7 +239,7 @@ public class PageTable{
 		}
 
 		public int compare (Integer p1, Integer p2){
-			return table.get(p1).getAccesses() - table.get(p2).getAccesses();
+			return table.get(p2).getAccesses() - table.get(p1).getAccesses();
 		}
 
 	}
