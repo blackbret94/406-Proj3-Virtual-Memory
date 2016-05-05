@@ -118,7 +118,7 @@ public class Main{
 			Process currentInstruction = tempQueue.get(i);
 			//determine previous
 			currentInstruction.setLastUsed(currentInstruction.getBirthday());
-			for(int j = 0; j<i-1; j++){
+			for(int j = 0; j<i; j++){
 				Process previousInstruction = tempQueue.get(j);
 				if(previousInstruction.getPid()==currentInstruction.getPid() && previousInstruction.getPage() == currentInstruction.getPage()){
 					currentInstruction.setLastUsed(j);
@@ -144,6 +144,6 @@ public class Main{
 			//make nice readable vars
 			frameTable.add(nextInstruction);
 		}	
-		//frameTable.printResults();
+		frameTable.printResults();
 	}
 }
