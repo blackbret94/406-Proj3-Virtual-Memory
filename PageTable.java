@@ -5,6 +5,7 @@ public class PageTable{
 	ArrayList<Page> table;
 	int entries, pageSize, time;
 	PriorityQueue<Integer> kickNext;
+	private boolean secondChance = false;
 	private int pageFaults;
 	private int diskAccesses;
 	
@@ -30,6 +31,11 @@ public class PageTable{
 			case "opt":
 			kickNext = new PriorityQueue<Integer> (entries, new CompareOPT());
 			break;
+				
+			case "second":
+			kickNext = new PriorityQueue<Integer> (entries, new CompareFIFO());
+			secondChance = true;
+			break;	
 			
 			default:
 			throw new RuntimeException("Specified Scheduling method not recognized");
@@ -72,6 +78,7 @@ public class PageTable{
 				// update last used
 				Page tmp = table.get(i);
 				tmp.setLastUsed(p.getBirthday());
+				tmp.setReference(true);
 				
 				// update next used
 				tmp.setNextUse(p.getNextUse());
@@ -92,6 +99,27 @@ public class PageTable{
 		if(kickNext.size() >= entries){
 			// pop
 			int insertSpot = kickNext.poll();
+			
+			// FOR SECOND CHANCE
+			// check reference
+			if(table.get(insertSpot).getReference() && secondChance){
+				// mark bit
+				table.get(insertSpot).setReference(false);
+					
+				// consider a different spot
+				Iterator<Integer> it = kickNext.iterator();
+				
+				while(it.hasNext()){
+					int nxt = it.next();
+					if(!table.get(nxt).getReference()){
+						insertSpot = nxt;
+						break;
+					} else {
+						// flip bit
+						table.get(nxt).setReference(false);
+					}
+				}
+			}
 			
 			// create page
 			Page newPage = createPage(p,insertSpot);
@@ -167,7 +195,6 @@ public class PageTable{
 	
 	class CompareFIFO implements Comparator<Integer>{
 		public CompareFIFO(){
-
 		}
 
 		public int compare (Integer p1, Integer p2){
@@ -178,11 +205,9 @@ public class PageTable{
 
 	class CompareLRU implements Comparator<Integer>{
 		public CompareLRU(){
-
 		}
 
 		public int compare (Integer p1, Integer p2){
-			//System.out.println(table.get(p1).getLastUsed() +"-"+ table.get(p2).getLastUsed());
 			return table.get(p1).getLastUsed() - table.get(p2).getLastUsed();
 		}
 
@@ -190,11 +215,9 @@ public class PageTable{
 	
 	class CompareOPT implements Comparator<Integer>{
 		public CompareOPT(){
-
 		}
 
 		public int compare (Integer p1, Integer p2){
-			//System.out.println(table.get(p1).getLastUsed() +"-"+ table.get(p2).getLastUsed());
 			return table.get(p2).getNextUse() - table.get(p1).getNextUse();
 		}
 
