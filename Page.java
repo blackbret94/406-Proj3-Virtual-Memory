@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class Page{
-  private boolean dirty;
+  private boolean dirty, reference;
   private int birthday, lastUsed, nextUse, number, size, pid, virtNumber;
   
   public Page(){
@@ -11,6 +11,7 @@ public class Page{
 	public Page(int size, int number){
 		this.size = size;
 		this.number = number;
+		reference = false;
 	}
 	
 	public boolean isDirty(){
@@ -72,4 +73,12 @@ public class Page{
   public void setVirtNumber(int virtNumber){
     this.virtNumber = virtNumber;
   }
+	
+	public void setReference(boolean b){
+		reference = b;
+	}
+	
+	public boolean getReference(){
+		return reference;
+	}
 }

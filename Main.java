@@ -125,12 +125,11 @@ public class Main{
 				}
 			}
 			//determine next
-			currentInstruction.setUsedAgain(false);
+			currentInstruction.setNextUse(Integer.MAX_VALUE);
 			for(int j = i+1; j<tempQueue.size(); j++){
 				Process nextInstruction = tempQueue.get(j);
 				if(nextInstruction.getPid()==currentInstruction.getPid() && nextInstruction.getPage() == currentInstruction.getPage()){
 					currentInstruction.setNextUse(j);
-					currentInstruction.setUsedAgain(true);
 					break;
 				}
 			}

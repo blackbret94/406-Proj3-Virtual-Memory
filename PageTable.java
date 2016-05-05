@@ -5,6 +5,7 @@ public class PageTable{
 	ArrayList<Page> table;
 	int entries, pageSize, time;
 	PriorityQueue<Integer> kickNext;
+	private boolean secondChance = false;
 	private int pageFaults;
 	private int diskAccesses;
 	
@@ -24,8 +25,17 @@ public class PageTable{
 			break;
 			
 			case "lru":
-			kickNext = new PriorityQueue<Integer> (entries, new CompareFIFO());
+			kickNext = new PriorityQueue<Integer> (entries, new CompareLRU());
 			break;
+				
+			case "opt":
+			kickNext = new PriorityQueue<Integer> (entries, new CompareOPT());
+			break;
+				
+			case "second":
+			kickNext = new PriorityQueue<Integer> (entries, new CompareFIFO());
+			secondChance = true;
+			break;	
 			
 			default:
 			throw new RuntimeException("Specified Scheduling method not recognized");
@@ -65,6 +75,18 @@ public class PageTable{
 					table.get(i).setDirty(true);	
 				}
 				
+				// update last used
+				Page tmp = table.get(i);
+				tmp.setLastUsed(p.getBirthday());
+				tmp.setReference(true);
+				
+				// update next used
+				tmp.setNextUse(p.getNextUse());
+				
+				// must re-weigh in priority queue
+				kickNext.remove(i);
+				kickNext.add(i);
+				
 				// print
 				System.out.println("no page fault. accessed frame #"+i);
 				System.out.println("\tVirtual Address: "+p.getAddress()+"  ->  Physical Address: "+(i*pageSize+(p.getAddress()-pageSize*p.getPage())));
@@ -73,14 +95,37 @@ public class PageTable{
 			}
 		}
 		
+		// Replacement
 		if(kickNext.size() >= entries){
 			// pop
 			int insertSpot = kickNext.poll();
+			
+			// FOR SECOND CHANCE
+			// check reference
+			if(table.get(insertSpot).getReference() && secondChance){
+				// mark bit
+				table.get(insertSpot).setReference(false);
+					
+				// consider a different spot
+				Iterator<Integer> it = kickNext.iterator();
+				
+				while(it.hasNext()){
+					int nxt = it.next();
+					if(!table.get(nxt).getReference()){
+						insertSpot = nxt;
+						break;
+					} else {
+						// flip bit
+						table.get(nxt).setReference(false);
+					}
+				}
+			}
 			
 			// create page
 			Page newPage = createPage(p,insertSpot);
 			if(p.canWrite()) newPage.setDirty(true);
 			Page oldPage = table.get(insertSpot);
+			
 			// add
 			table.set(insertSpot,newPage);
 			kickNext.add(insertSpot);
@@ -104,7 +149,7 @@ public class PageTable{
 			return;
 		} else {
 			// add
-			int insertSpot = kickNext.size();
+			int insertSpot = table.size();
 			
 			// create page
 			Page newPage = createPage(p,insertSpot);
@@ -135,7 +180,7 @@ public class PageTable{
 		
 		// fill out
 		newPage.setBirthday(p.getBirthday());
-		newPage.setLastUsed(p.getLastUsed());
+		newPage.setLastUsed(p.getBirthday());
 		newPage.setNextUse(p.getNextUse());
 		newPage.setPid(p.getPid());
 		newPage.setVirtNumber(p.getPage());
@@ -150,7 +195,6 @@ public class PageTable{
 	
 	class CompareFIFO implements Comparator<Integer>{
 		public CompareFIFO(){
-
 		}
 
 		public int compare (Integer p1, Integer p2){
@@ -161,11 +205,20 @@ public class PageTable{
 
 	class CompareLRU implements Comparator<Integer>{
 		public CompareLRU(){
-
 		}
 
 		public int compare (Integer p1, Integer p2){
 			return table.get(p1).getLastUsed() - table.get(p2).getLastUsed();
+		}
+
+	}
+	
+	class CompareOPT implements Comparator<Integer>{
+		public CompareOPT(){
+		}
+
+		public int compare (Integer p1, Integer p2){
+			return table.get(p2).getNextUse() - table.get(p1).getNextUse();
 		}
 
 	}
