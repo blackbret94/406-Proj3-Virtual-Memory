@@ -2,7 +2,7 @@ import java.util.*;
 
 public class Page{
   private boolean dirty, reference;
-  private int birthday, lastUsed, nextUse, number, size, pid, virtNumber;
+  private int birthday, lastUsed, nextUse, number, size, pid, virtNumber, accesses;
   
   public Page(){
     System.out.println("Blank page constructor should NOT be used");
@@ -12,6 +12,7 @@ public class Page{
 		this.size = size;
 		this.number = number;
 		reference = false;
+		accesses = 0;
 	}
 	
 	public boolean isDirty(){
@@ -80,5 +81,13 @@ public class Page{
 	
 	public boolean getReference(){
 		return reference;
+	}
+	
+	public void incrementAccesses(){
+		accesses++;
+	}
+	
+	public int getAccesses(){
+		return accesses;
 	}
 }

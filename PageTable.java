@@ -35,10 +35,19 @@ public class PageTable{
 			case "second":
 			kickNext = new PriorityQueue<Integer> (entries, new CompareFIFO());
 			secondChance = true;
-			break;	
+			break;
+			
+			case "esecond":
+			kickNext = new PriorityQueue<Integer> (entries, new CompareFIFO());
+			secondChance = true;
+			throw new RuntimeException("Specified method was not implemented");
+			
+			case "hybrid":
+			kickNext = new PriorityQueue<Integer> (entries, new CompareMFU());
+			break;
 			
 			default:
-			throw new RuntimeException("Specified Scheduling method not recognized");
+			throw new RuntimeException("Specified Replacement method not recognized");
 		}
 		
 	}
@@ -69,7 +78,7 @@ public class PageTable{
 			// check for match
 			if(table.get(i).getPid() == p.getPid() && table.get(i).getVirtNumber() == p.getPage()){
 				// already in table
-				
+				table.get(i).incrementAccesses();
 				// mark as dirty if writes
 				if(p.canWrite()){
 					table.get(i).setDirty(true);	
@@ -128,6 +137,7 @@ public class PageTable{
 			
 			// add
 			table.set(insertSpot,newPage);
+			newPage.incrementAccesses();
 			kickNext.add(insertSpot);
 			
 			//virt addr/page size
@@ -154,6 +164,7 @@ public class PageTable{
 			// create page
 			Page newPage = createPage(p,insertSpot);
 			if(p.canWrite()) newPage.setDirty(true);
+			newPage.incrementAccesses();
 			
 			table.add(newPage);
 			kickNext.add(insertSpot);
@@ -219,6 +230,16 @@ public class PageTable{
 
 		public int compare (Integer p1, Integer p2){
 			return table.get(p2).getNextUse() - table.get(p1).getNextUse();
+		}
+
+	}
+	
+	class CompareMFU implements Comparator<Integer>{
+		public CompareMFU(){
+		}
+
+		public int compare (Integer p1, Integer p2){
+			return table.get(p1).getAccesses() - table.get(p2).getAccesses();
 		}
 
 	}
