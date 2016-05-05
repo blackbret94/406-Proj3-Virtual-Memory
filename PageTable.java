@@ -73,6 +73,9 @@ public class PageTable{
 				Page tmp = table.get(i);
 				tmp.setLastUsed(p.getBirthday());
 				
+				// update next used
+				tmp.setNextUse(p.getNextUse());
+				
 				// must re-weigh in priority queue
 				kickNext.remove(i);
 				kickNext.add(i);
@@ -85,6 +88,7 @@ public class PageTable{
 			}
 		}
 		
+		// Replacement
 		if(kickNext.size() >= entries){
 			// pop
 			int insertSpot = kickNext.poll();
@@ -191,7 +195,7 @@ public class PageTable{
 
 		public int compare (Integer p1, Integer p2){
 			//System.out.println(table.get(p1).getLastUsed() +"-"+ table.get(p2).getLastUsed());
-			return table.get(p1).getNextUse() - table.get(p2).getNextUse();
+			return table.get(p2).getNextUse() - table.get(p1).getNextUse();
 		}
 
 	}
